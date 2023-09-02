@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+    environment:
+      TEST_DB_HOST: 'mysql'
+      TEST_DB_USER: 'root'
+      TEST_DB_PASS: ''
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
