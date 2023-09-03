@@ -16,8 +16,11 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: trilogy-aurora-test
+          TEST_DB_HOST: 'mysql'
+          TEST_DB_USER: 'root'
+          TEST_DB_PASS: ''
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
           - 3306
         options: >-
