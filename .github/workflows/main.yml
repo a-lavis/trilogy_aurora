@@ -11,16 +11,16 @@ on:
 
 jobs:
   test:
+    env:
+      TEST_DB_HOST: 'mysql'
+      TEST_DB_USER: 'root'
+      TEST_DB_PASS: ''
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:8.0
-        env:
-          TEST_DB_HOST: 'mysql'
-          TEST_DB_USER: 'root'
-          TEST_DB_PASS: ''
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
           - 3306
         options: >-
@@ -39,6 +39,9 @@ jobs:
           - '3.2'
 
     steps:
+    - name: Run MySQL
+      run: |
+        sudo /etc/init.d/mysql start
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
