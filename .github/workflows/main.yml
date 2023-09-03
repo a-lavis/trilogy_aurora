@@ -43,7 +43,7 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Run tests
-      run: bin/test
+      run: bundle exec rake spec
 
   rubocop:
     runs-on: ubuntu-latest
