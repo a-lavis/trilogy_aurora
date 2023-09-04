@@ -36,15 +36,13 @@ jobs:
           - '3.2'
 
     env:
-      TEST_DB_HOST: 'mysql'
-      TEST_DB_USER: 'root'
-      TEST_DB_PASS: 'root'
+      TEST_DB_HOST: 127.0.0.1
+      TEST_DB_USER: root
+      TEST_DB_PASS: root
 
     steps:
     - name: Run MySQL
       run: sudo systemctl start mysql
-    - name: sleep
-      run: sleep 60
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
