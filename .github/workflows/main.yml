@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: test
         ports:
           - 3306
@@ -40,13 +39,11 @@ jobs:
     env:
       TEST_DB_HOST: 127.0.0.1
       TEST_DB_USER: root
-      TEST_DB_PASS: ''
+      TEST_DB_PASS: root
 
     steps:
     - name: Run MySQL
       run: sudo systemctl start mysql
-    - name: Get some diagnostic info
-      run: mysql -uroot -proot --port 3306 -e "SELECT CURRENT_USER() AS user;"
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
