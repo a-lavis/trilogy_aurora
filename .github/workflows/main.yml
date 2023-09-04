@@ -44,6 +44,8 @@ jobs:
     steps:
     - name: Run MySQL
       run: sudo systemctl start mysql
+    - name: Get some diagnostic info
+      run: mysql -u root --port 3306 -e "SELECT CURRENT_USER() AS user;"
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
