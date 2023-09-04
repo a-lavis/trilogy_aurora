@@ -16,7 +16,8 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
           - 3306
         options: >-
@@ -24,6 +25,8 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+          -e MYSQL_ROOT_PASSWORD=''
+          -e MYSQL_ALLOW_EMPTY_PASSWORD=true
     name: Test Ruby ${{ matrix.ruby }}
     timeout-minutes: 5
     strategy:
@@ -37,7 +40,7 @@ jobs:
     env:
       TEST_DB_HOST: 127.0.0.1
       TEST_DB_USER: root
-      TEST_DB_PASS: root
+      TEST_DB_PASS: ''
 
     steps:
     - name: Run MySQL
