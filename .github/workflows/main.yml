@@ -12,18 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     name: Test Ruby ${{ matrix.ruby }}
     timeout-minutes: 5
     strategy:
@@ -35,21 +23,14 @@ jobs:
           - '3.2'
 
     env:
-      TEST_DB_HOST: 127.0.0.1
-      TEST_DB_USER: root
-      TEST_DB_PASS: root
+      RUBY_VERSION: ${{ matrix.ruby }}
 
     steps:
-    - name: Run MySQL
-      run: sudo systemctl start mysql
     - uses: actions/checkout@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
-    - name: Run tests
-      run: bundle exec rake spec
+    - name: Docker Build
+      run: docker-compose build --build-arg RUBY_VERSION=$RUBY_VERSION
+    - name: Run tests with Docker
+      run: docker-compose run --rm app ./bin/test
 
   rubocop:
     runs-on: ubuntu-latest

@@ -1,4 +1,6 @@
-FROM ruby:3.2-alpine
+ARG RUBY_VERSION=3.2
+
+FROM ruby:${RUBY_VERSION}-alpine
 
 # Create application directory.
 RUN mkdir /app
