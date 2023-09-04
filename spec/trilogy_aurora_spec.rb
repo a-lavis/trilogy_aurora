@@ -5,9 +5,9 @@ RSpec.describe TrilogyAurora do
 
   let :trilogy do
     Trilogy.new(
-      host: ENV.fetch("TEST_DB_HOST", nil),
-      username: ENV.fetch("TEST_DB_USER", nil),
-      password: ENV.fetch("TEST_DB_PASS", nil),
+      host: ENV.fetch("TEST_DB_HOST"),
+      username: ENV.fetch("TEST_DB_USER"),
+      password: ENV.fetch("TEST_DB_PASS"),
       aurora_max_retry: 10,
       aurora_disconnect_on_readonly: aurora_disconnect_on_readonly
     )
