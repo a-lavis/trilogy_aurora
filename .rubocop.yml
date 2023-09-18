@@ -20,6 +20,10 @@ Layout/LineLength:
 Metrics/MethodLength:
   Max: 20
 
+RSpec/Focus:
+  Enabled: true
+  AutoCorrect: false
+
 RSpec/MultipleExpectations:
   Max: 2
 

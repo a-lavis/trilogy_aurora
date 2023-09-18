@@ -97,6 +97,11 @@ module TrilogyAurora
     def self.const_missing(name)
       TrilogyAurora::ORIGINAL_TRILOGY_CLASS.const_get(name)
     end
+
+    # Delegate `const_defined?` to ::Trilogy.
+    def self.const_defined?(name, ...)
+      TrilogyAurora::ORIGINAL_TRILOGY_CLASS.const_defined?(name, ...)
+    end
   end
 
   # The original ::Trilogy class.
