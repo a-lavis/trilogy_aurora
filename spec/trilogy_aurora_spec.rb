@@ -254,4 +254,11 @@ RSpec.describe TrilogyAurora do
       )
     end
   end
+
+  describe ".const_defined?" do
+    it "delegates to Trilogy" do
+      expect(TrilogyAurora::ORIGINAL_TRILOGY_CLASS).to receive(:const_defined?).with("FOOBAR")
+      TrilogyAurora::Trilogy.const_defined?("FOOBAR")
+    end
+  end
 end
