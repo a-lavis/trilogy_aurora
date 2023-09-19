@@ -2,6 +2,10 @@ ARG RUBY_VERSION=3.2
 
 FROM ruby:${RUBY_VERSION}-alpine
 
+ARG TRILOGY_VERSION
+
+ENV TRILOGY_VERSION=$TRILOGY_VERSION
+
 # Create application directory.
 RUN mkdir /app
 WORKDIR /app
