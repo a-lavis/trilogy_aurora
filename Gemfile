@@ -6,6 +6,10 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
+  # If the TRILOGY_VERSION environment variable is set, it should be a minor version.
+  trilogy_version = ENV.fetch("TRILOGY_VERSION", nil)
+  gem "trilogy", "~> #{trilogy_version}.0" if trilogy_version&.length&.positive?
+
   gem "debug"
   gem "irb"
   gem "rake", "~> 13.0"
