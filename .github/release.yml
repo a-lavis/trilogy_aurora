@@ -1,0 +1,19 @@
+# release.yml
+
+changelog:
+  categories:
+    - title: ✨ Enhancements
+      labels:
+        - enhancement
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+    - title: ✅ CI changes
+      labels:
+        - CI
+    - title: ☝️ Dependency updates
+      labels:
+        - dependencies
+    - title: 🛠 Other Changes
+      labels:
+        - "*"
