@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     trilogy_aurora (0.1.0)
-      trilogy (~> 2.5)
+      trilogy (~> 2.0)
 
 GEM
   remote: https://rubygems.org/

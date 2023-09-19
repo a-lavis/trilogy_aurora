@@ -5,6 +5,9 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in trilogy_aurora.gemspec
 gemspec
 
+trilogy_version = ENV.fetch("TRILOGY_VERSION", false)
+gem "trilogy", "~> #{trilogy_version}" if trilogy_version
+
 group :development do
   gem "debug"
   gem "irb"
