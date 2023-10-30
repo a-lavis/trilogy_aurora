@@ -12,7 +12,7 @@ group :development do
 
   gem "debug"
   gem "irb"
-  gem "rake", "~> 13.0"
+  gem "rake", "~> 13.1"
   gem "rspec", "~> 3.0"
   gem "rubocop", "~> 1.57", require: false
   gem "rubocop-rake", "~> 0.6", require: false
