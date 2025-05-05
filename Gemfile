@@ -15,7 +15,7 @@ group :development do
   gem "rake", "~> 13.1"
   gem "rspec", "~> 3.13"
   gem "rubocop", "~> 1.62", require: false
-  gem "rubocop-rake", "~> 0.6", require: false
-  gem "rubocop-rspec", "~> 2.28", require: false
+  gem "rubocop-rake", "~> 0.7", require: false
+  gem "rubocop-rspec", "~> 3.6", require: false
   gem "simplecov", "~> 0.22", require: false
 end
