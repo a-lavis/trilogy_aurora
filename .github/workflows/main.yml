@@ -28,13 +28,15 @@ jobs:
           - '2.5'
           - '2.6'
           - '2.7'
+          - '2.8'
+          - '2.9'
 
     env:
       RUBY_VERSION: ${{ matrix.ruby }}
       TRILOGY_VERSION: ${{ matrix.trilogy }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Docker Build
       run: docker compose build --build-arg RUBY_VERSION=$RUBY_VERSION --build-arg TRILOGY_VERSION=$TRILOGY_VERSION
     - name: Docker MySQL Healthcheck
@@ -46,11 +48,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Rubocop
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.3
+        ruby-version: 3.4
         bundler-cache: true
     - name: Rubocop
       run: bundle exec rake rubocop
