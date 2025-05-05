@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "trilogy_aurora/version"
-require "trilogy"
+require_relative 'trilogy_aurora/version'
+require 'trilogy'
 
 # This module contains Trilogy, a wrapper around ::Trilogy that handles read-only errors from Aurora.
 #
@@ -37,13 +37,13 @@ module TrilogyAurora
       begin
         trilogy.query(...)
       rescue TrilogyAurora::ORIGINAL_TRILOGY_CLASS::Error => e
-        raise e unless e.message&.include?("--read-only")
+        raise e unless e.message&.include?('--read-only')
 
         try_count += 1
 
         if @disconnect_only
           warn(
-            "[trilogy_aurora] Database is readonly, Aurora failover event likely occured, closing database connection"
+            '[trilogy_aurora] Database is readonly, Aurora failover event likely occured, closing database connection'
           )
           disconnect!
         elsif try_count <= @max_retry
