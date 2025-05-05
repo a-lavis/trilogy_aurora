@@ -36,11 +36,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Docker Build
-      run: docker-compose build --build-arg RUBY_VERSION=$RUBY_VERSION --build-arg TRILOGY_VERSION=$TRILOGY_VERSION
+      run: docker compose build --build-arg RUBY_VERSION=$RUBY_VERSION --build-arg TRILOGY_VERSION=$TRILOGY_VERSION
     - name: Docker MySQL Healthcheck
-      run: docker-compose run --rm app echo "MySQL Healthy"
+      run: docker compose run --rm app echo "MySQL Healthy"
     - name: Run tests with Docker
-      run: docker-compose run --rm app ./bin/test
+      run: docker compose run --rm app ./bin/test
 
   rubocop:
     runs-on: ubuntu-latest
