@@ -10,6 +10,7 @@ group :development do
   trilogy_version = ENV.fetch('TRILOGY_VERSION', nil)
   gem 'trilogy', "~> #{trilogy_version}.0" if trilogy_version&.length&.positive?
 
+  gem 'activerecord'
   gem 'debug'
   gem 'irb'
   gem 'rake', '~> 13.1'

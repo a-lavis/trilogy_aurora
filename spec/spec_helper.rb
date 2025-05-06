@@ -7,13 +7,18 @@ SimpleCov.at_exit do
   SimpleCov.result.format!
 
   if SimpleCov.result.covered_percent < 100
-    puts "\n\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n"
-    puts "\e[31mConverage is under 100%. See `coverage/index.html`\e[0m\n"
-    puts "\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n\n"
+    puts <<~ERR
+      \e[31m
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      Coverage is under 100%. See `coverage/index.html`
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      \e[0m
+    ERR
     abort
   end
 end
 
+require 'active_record'
 require 'trilogy_aurora'
 
 RSpec.configure do |config|
