@@ -35,8 +35,8 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - run: docker compose up --detach mysql
-      - run: bundle install
       - run: bundle exec rake spec
 
   rubocop:
