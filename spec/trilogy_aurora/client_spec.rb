@@ -15,6 +15,12 @@ RSpec.describe TrilogyAurora::Client do
     }
   end
 
+  describe 'Trilogy' do
+    it 'returns TrilogyAurora::Trilogy' do
+      expect(Trilogy).to eq described_class
+    end
+  end
+
   describe '#trilogy' do
     it 'return an original Trilogy instance' do
       expect(trilogy_aurora.trilogy).to be_instance_of(TrilogyAurora::Trilogy)
