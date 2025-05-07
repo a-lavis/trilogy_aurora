@@ -1,0 +1,13 @@
+name: Setup MySQL
+description: Setup MySQL container
+runs:
+  using: composite
+  steps:
+    - name: start mysql
+      shell: bash
+      run: docker compose up --detach mysql
+    - name: start mysql
+      shell: bash
+      run: >
+        timeout 30 bash -c
+        'until docker compose run --rm mysql mysql -h mysql -e "SELECT 1" ; do sleep 1 ; done'
