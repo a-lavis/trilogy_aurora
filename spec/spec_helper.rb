@@ -18,7 +18,6 @@ SimpleCov.at_exit do
   end
 end
 
-require 'active_record'
 require 'trilogy_aurora'
 
 RSpec.configure do |config|

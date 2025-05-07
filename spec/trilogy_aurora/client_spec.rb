@@ -17,7 +17,7 @@ RSpec.describe TrilogyAurora::Client do
 
   describe '#trilogy' do
     it 'return an original Trilogy instance' do
-      expect(trilogy_aurora.trilogy).to be_instance_of(Trilogy)
+      expect(trilogy_aurora.trilogy).to be_instance_of(TrilogyAurora::Trilogy)
     end
   end
 
@@ -133,7 +133,7 @@ RSpec.describe TrilogyAurora::Client do
 
     it 'sets the trilogy client to a new instance of Trilogy' do
       reconnect!
-      expect(trilogy_aurora.trilogy).to be_instance_of(Trilogy)
+      expect(trilogy_aurora.trilogy).to be_instance_of(TrilogyAurora::Trilogy)
     end
 
     it 'closes the old #trilogy' do
@@ -154,7 +154,7 @@ RSpec.describe TrilogyAurora::Client do
 
       it 'sets the trilogy client to a new instance of Trilogy' do
         reconnect!
-        expect(trilogy_aurora.trilogy).to be_instance_of(Trilogy)
+        expect(trilogy_aurora.trilogy).to be_instance_of(TrilogyAurora::Trilogy)
       end
     end
   end
@@ -175,14 +175,14 @@ RSpec.describe TrilogyAurora::Client do
 
   describe '::method_missing' do
     it 'delegates to Trilogy' do
-      expect(Trilogy).to receive(:foobar)
+      expect(TrilogyAurora::Trilogy).to receive(:foobar)
       described_class.foobar
     end
   end
 
   describe '::respond_to_missing?' do
     it 'delegates to Trilogy' do
-      expect(Trilogy).to receive(:respond_to?).with(:foobar, false)
+      expect(TrilogyAurora::Trilogy).to receive(:respond_to?).with(:foobar, false)
       described_class.respond_to?(:foobar)
     end
   end
@@ -195,7 +195,7 @@ RSpec.describe TrilogyAurora::Client do
 
   describe '::const_defined?' do
     it 'delegates to Trilogy' do
-      expect(Trilogy).to receive(:const_defined?).with('FOOBAR')
+      expect(TrilogyAurora::Trilogy).to receive(:const_defined?).with('FOOBAR')
       described_class.const_defined?('FOOBAR')
     end
   end
