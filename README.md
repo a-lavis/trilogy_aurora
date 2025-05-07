@@ -14,11 +14,13 @@ Essentially, the [mysql2-aurora](https://github.com/alfa-jpn/mysql2-aurora) gem 
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add trilogy_aurora
+```shell
+bundle add trilogy_aurora
+```
 
 ## Usage
 
-In addition to existing initialization options for `Trilogy`, you can now also use the `aurora_max_retry` and `aurora_disconnect_on_readonly` options.
+In addition to existing initialization options for `Trilogy`, you can now also use the `aurora_disconnect_on_readonly` and `aurora_max_retry` options.
 
 ```ruby
 Trilogy.new(
@@ -32,14 +34,12 @@ Trilogy.new(
 
 with Rails >= 7.1, in `database.yml`
 
-```yml
+```yaml
 development:
-  adapter:          trilogy
-  host:             localhost
-  username:         root
-  password:         change_me
-  aurora_max_retry: 5
+  adapter: trilogy
+  # ...
   aurora_disconnect_on_readonly: true
+  aurora_max_retry: 5
 ```
 
 From the README of [mysql2-aurora](https://github.com/alfa-jpn/mysql2-aurora):
@@ -77,10 +77,14 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/a-lavi
 
 ## Testing
 
-```shell
-# Image build
-bin/docker-build
+Run Rubocop + RSpec
 
-# Run tests
-bin/docker-test
+```shell
+bundle exec rake
+```
+
+Clean up
+
+```shell
+docker compose down
 ```
