@@ -7,7 +7,7 @@ SimpleCov.at_exit do
   SimpleCov.result.format!
 
   if SimpleCov.result.covered_percent < 100
-    puts <<~ERR
+    warn <<~ERR
       \e[31m
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       Coverage is under 100%. See `coverage/index.html`
