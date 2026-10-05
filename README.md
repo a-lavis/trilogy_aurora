@@ -1,9 +1,3 @@
-# ⚠️ Warning
-
-As far as I'm aware, this hasn't been used in production.  Please test before using!
-
-If you use this gem in production, please let me know so I can update this README!
-
 # TrilogyAurora
 
 Modifies [Trilogy](https://github.com/trilogy-libraries/trilogy) to support AWS Aurora failover.
