@@ -36,6 +36,7 @@ RSpec.describe TrilogyAurora::Client do
 
       before do
         allow(trilogy_aurora).to receive(:warn)
+        allow(trilogy_aurora).to receive(:disconnect!)
         allow(trilogy_aurora.trilogy).to receive(:query).and_raise(
           Trilogy::BaseError,
           'ERROR 1290 (HY000): The MySQL server is running with the' \
@@ -44,8 +45,8 @@ RSpec.describe TrilogyAurora::Client do
       end
 
       it 'disconnects immediately', :aggregate_failures do
-        expect(trilogy_aurora).to receive(:disconnect!)
         expect { query }.to raise_error(Trilogy::Error)
+        expect(trilogy_aurora).to have_received(:disconnect!)
       end
     end
 
@@ -62,8 +63,9 @@ RSpec.describe TrilogyAurora::Client do
     end
 
     it "calls the original Trilogy's #query" do
-      expect(trilogy_aurora.trilogy).to receive(:query).once
+      allow(trilogy_aurora.trilogy).to receive(:query)
       query
+      expect(trilogy_aurora.trilogy).to have_received(:query).once
     end
 
     context 'when Trilogy::Error is raised' do
@@ -79,53 +81,59 @@ RSpec.describe TrilogyAurora::Client do
       end
 
       it 'reconnects 10 times', :aggregate_failures do
-        expect(trilogy_aurora).to receive(:reconnect!).exactly(10).times
         expect { query }.to raise_error(Trilogy::Error)
+        expect(trilogy_aurora).to have_received(:reconnect!).exactly(10).times
       end
 
       it 'retries 10 times', :aggregate_failures do
-        expect(trilogy_aurora.trilogy).to receive(:query).exactly(11).times
         expect { query }.to raise_error(Trilogy::Error)
+        expect(trilogy_aurora.trilogy).to have_received(:query).exactly(11).times
       end
 
       it 'retries at the correct interval', :aggregate_failures do
-        [0, 1.5, 3, 4.5, 6, 7.5, 9, 10, 10, 10].each do |seconds|
-          expect(trilogy_aurora).to receive(:sleep).with(seconds).ordered
-        end
+        intervals = []
+        allow(trilogy_aurora).to receive(:sleep) { |seconds| intervals << seconds }
         expect { query }.to raise_error(Trilogy::Error)
+        expect(intervals).to eq([0, 1.5, 3, 4.5, 6, 7.5, 9, 10, 10, 10])
+      end
+    end
+
+    context 'when Trilogy::Error is raised and is not a failover error' do
+      before do
+        allow(trilogy_aurora).to receive(:warn)
+        allow(trilogy_aurora).to receive(:sleep)
+        allow(trilogy_aurora).to receive(:reconnect!)
+        allow(trilogy_aurora.trilogy).to receive(:query).and_raise(
+          Trilogy::BaseError,
+          "Unknown column 'hogehoge' in 'field list'"
+        )
       end
 
-      context 'when Trilogy::Error is not a failover error' do
-        before do
-          allow(trilogy_aurora.trilogy).to receive(:query).and_raise(
-            Trilogy::BaseError,
-            "Unknown column 'hogehoge' in 'field list'"
-          )
-        end
+      it 'does not reconnect', :aggregate_failures do
+        expect { query }.to raise_error(Trilogy::Error)
+        expect(trilogy_aurora).not_to have_received(:reconnect!)
+      end
 
-        it 'does not reconnect', :aggregate_failures do
-          expect(trilogy_aurora).not_to receive(:reconnect!)
-          expect { query }.to raise_error(Trilogy::Error)
-        end
-
-        it 'does not retry query', :aggregate_failures do
-          expect(trilogy_aurora.trilogy).to receive(:query).once
-          expect { query }.to raise_error(Trilogy::Error)
-        end
+      it 'does not retry query', :aggregate_failures do
+        expect { query }.to raise_error(Trilogy::Error)
+        expect(trilogy_aurora.trilogy).to have_received(:query).once
       end
     end
 
     context 'when StandardError is raised' do
-      before { allow(trilogy_aurora.trilogy).to receive(:query).and_raise(StandardError) }
+      before do
+        allow(trilogy_aurora).to receive(:reconnect!)
+        allow(trilogy_aurora.trilogy).to receive(:query).and_raise(StandardError)
+      end
 
       it 'does not reconnect', :aggregate_failures do
-        expect(trilogy_aurora).not_to receive(:reconnect!)
         expect { query }.to raise_error(StandardError)
+        expect(trilogy_aurora).not_to have_received(:reconnect!)
       end
 
       it 'does not retry query', :aggregate_failures do
-        expect(trilogy_aurora.trilogy).to receive(:query).once
         expect { query }.to raise_error(StandardError)
+        expect(trilogy_aurora.trilogy).to have_received(:query).once
       end
     end
   end
@@ -143,8 +151,10 @@ RSpec.describe TrilogyAurora::Client do
     end
 
     it 'closes the old #trilogy' do
-      expect(trilogy_aurora.trilogy).to receive(:close).once
+      old_trilogy = trilogy_aurora.trilogy
+      allow(old_trilogy).to receive(:close)
       reconnect!
+      expect(old_trilogy).to have_received(:close).once
     end
 
     context 'when #close raises an error' do
@@ -167,29 +177,33 @@ RSpec.describe TrilogyAurora::Client do
 
   describe '#method_missing' do
     it 'delegates to #trilogy' do
-      expect(trilogy_aurora.trilogy).to receive(:ping)
+      allow(trilogy_aurora.trilogy).to receive(:ping)
       trilogy_aurora.ping
+      expect(trilogy_aurora.trilogy).to have_received(:ping)
     end
   end
 
   describe '#respond_to_missing?' do
     it 'delegates to #trilogy' do
-      expect(trilogy_aurora.trilogy).to receive(:respond_to?).with(:foobar, false)
+      allow(trilogy_aurora.trilogy).to receive(:respond_to?).and_call_original
       trilogy_aurora.respond_to?(:foobar)
+      expect(trilogy_aurora.trilogy).to have_received(:respond_to?).with(:foobar, false)
     end
   end
 
   describe '::method_missing' do
     it 'delegates to Trilogy' do
-      expect(TrilogyAurora::Trilogy).to receive(:foobar)
+      allow(TrilogyAurora::Trilogy).to receive(:foobar)
       described_class.foobar
+      expect(TrilogyAurora::Trilogy).to have_received(:foobar)
     end
   end
 
   describe '::respond_to_missing?' do
     it 'delegates to Trilogy' do
-      expect(TrilogyAurora::Trilogy).to receive(:respond_to?).with(:foobar, false)
+      allow(TrilogyAurora::Trilogy).to receive(:respond_to?).and_call_original
       described_class.respond_to?(:foobar)
+      expect(TrilogyAurora::Trilogy).to have_received(:respond_to?).with(:foobar, false)
     end
   end
 
@@ -201,8 +215,9 @@ RSpec.describe TrilogyAurora::Client do
 
   describe '::const_defined?' do
     it 'delegates to Trilogy' do
-      expect(TrilogyAurora::Trilogy).to receive(:const_defined?).with('FOOBAR')
+      allow(TrilogyAurora::Trilogy).to receive(:const_defined?).and_call_original
       described_class.const_defined?('FOOBAR')
+      expect(TrilogyAurora::Trilogy).to have_received(:const_defined?).with('FOOBAR')
     end
   end
 end
