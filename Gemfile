@@ -12,10 +12,10 @@ group :development do
 
   gem 'debug'
   gem 'irb'
-  gem 'rake', '~> 13.1'
+  gem 'rake', '~> 13.4'
   gem 'rspec', '~> 3.13'
-  gem 'rubocop', '~> 1.62', require: false
+  gem 'rubocop', '~> 1.91', require: false
   gem 'rubocop-rake', '~> 0.7', require: false
-  gem 'rubocop-rspec', '~> 3.6', require: false
-  gem 'simplecov', '~> 0.22', require: false
+  gem 'rubocop-rspec', '~> 3.10', require: false
+  gem 'simplecov', '~> 1.3', require: false
 end
