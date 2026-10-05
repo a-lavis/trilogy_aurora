@@ -22,8 +22,8 @@ jobs:
           - "3.4"
           - "4.0"
         trilogy:
-          - "2.9"
-          - "2.10"
+          - "2.12"
+          - "2.13"
 
     env:
       TRILOGY_VERSION: ${{ matrix.trilogy }}
