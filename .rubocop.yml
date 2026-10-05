@@ -8,9 +8,3 @@ AllCops:
 
 Metrics/MethodLength:
   Max: 25
-
-RSpec/MessageSpies:
-  Enabled: false
-
-RSpec/NestedGroups:
-  Max: 4
